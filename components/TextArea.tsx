@@ -6,26 +6,73 @@ const TextArea = () => {
     const [bakedCode, setBakedCode] = useState<string>('');
     const [convertedCode, setConvertedCode] = useState<string>('');
     const textAreaRef = useRef<any>();
-    const reservedWords = ['SELECT', 'FROM', 'WHERE', 'JOIN'];
+    const reservedWords = ['SELECT', 'FROM', 'WHERE', 'JOIN', 'DELETE', 'INSERT'];
 
-    // 変換処理
+    // 前後処理
     const convertBakedCodeToBeEasy = (code: string) => {
         // 改行数をカウント、行ごとに配列の要素にいれる
         const sqlLogLines: Array<string> = code.split(/\n/g);
-        console.log(sqlLogLines);
+        // console.log(sqlLogLines);
         if (sqlLogLines.length <= 0) {
             console.log('1行以上入力してください')
         }
+        
+        /**
+         * sqlLogLinesWithoutUnnecessaryString は結果
+         */
         let sqlLogLinesWithoutUnnecessaryString: string = '';
+        // let result = '';
+        let parents: number[][] = [];
         // Queryまでをカット。
-        sqlLogLines.forEach((sqlLogLine, index) => {
+        sqlLogLines.forEach((sqlLogLine) => {
             // 'Query+空白'以前を切り捨てる。あと末尾に`;`をつける
-            let tmpSqlLog = sqlLogLine.split(/Query+\s+/g)[1] + ';\n';
-            sqlLogLinesWithoutUnnecessaryString += tmpSqlLog;
+            let tmpSqlLog = sqlLogLine.split(/Query+\s+/g)[1];
+            let numbers: number[] = [];
+            reservedWords.forEach(reservedWord => {
+                if (tmpSqlLog.indexOf(`${reservedWord} `) !== -1) {
+                    numbers.push(tmpSqlLog.indexOf(`${reservedWord} `));   
+                }
+            })
+            parents.push(numbers);
+            // 加工後、sqlLogLinesWithoutUnnecessaryString の末尾に追加していく
+            sqlLogLinesWithoutUnnecessaryString += tmpSqlLog + ';';
         });
-        console.log(sqlLogLinesWithoutUnnecessaryString);
+        // 最終変換
+        sqlLogLinesWithoutUnnecessaryString = converting(sqlLogLinesWithoutUnnecessaryString, parents);
+        // ループを抜けたら set する
         setConvertedCode(sqlLogLinesWithoutUnnecessaryString);
-        console.log(reservedWords);
+    }
+
+    // core
+    const converting = (oneLineSQL: string, model: number[][]): string => {
+        // console.log(oneLineSQL);
+        // console.log(model.length);
+        // console.log(oneLineSQL.split(';'));
+        // console.log(oneLineSQL.split(';')[model.length]);
+        let result = '';
+        // 生成し直す
+        const newSQLLines = oneLineSQL.split(';').filter((n, index) => {
+            if (index !== model.length) {
+                return n;
+            }
+        })
+        // console.log(newSQLLines);
+        newSQLLines.forEach((sql, index) => {
+            // console.log(model[index]);
+            // console.log(sql);
+            model[index].forEach((m, i) => {
+                console.log(i);
+                // console.log(!isNaN(model[index][i+1]-1) ? model[index][i+1]-1 : sql.length-1);
+                console.log(sql.substr(m, !isNaN(model[index][i+1]-1) ? model[index][i+1]-1 : sql.length-1));
+                result += `${sql.substr(m, !isNaN(model[index][i+1]-1) ? model[index][i+1]-1 : sql.length-1)}\n`;
+            })
+            // console.log('------------------------');
+            // console.log(sql.substr())
+        })
+        // console.log(oneLineSQL);
+        // console.log(model);
+        // return oneLineSQL;
+        return result;
     }
 
     function copyToClipboard(e: any) {
