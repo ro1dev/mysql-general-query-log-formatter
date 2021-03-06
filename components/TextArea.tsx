@@ -61,10 +61,13 @@ const TextArea = () => {
             // console.log(model[index]);
             // console.log(sql);
             model[index].forEach((m, i) => {
-                console.log(i);
+                // console.log(i);
+                // console.log(m);
+                
                 // console.log(!isNaN(model[index][i+1]-1) ? model[index][i+1]-1 : sql.length-1);
-                console.log(sql.substr(m, !isNaN(model[index][i+1]-1) ? model[index][i+1]-1 : sql.length-1));
-                result += `${sql.substr(m, !isNaN(model[index][i+1]-1) ? model[index][i+1]-1 : sql.length-1)}\n`;
+                // console.log(!isNaN(model[index][i+1]-1) ? model[index][i+1]-1 : sql.length-1);
+                // console.log(sql.substr(m, !isNaN(model[index][i+1]-1) ? model[index][i+1]-1-m : sql.length-1-m));
+                result += `${sql.substr(m, !isNaN(model[index][i+1]-1) ? model[index][i+1]-1-m : sql.length-1-m)}\n`;
             })
             // console.log('------------------------');
             // console.log(sql.substr())
