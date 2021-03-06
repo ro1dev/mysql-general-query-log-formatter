@@ -9,6 +9,7 @@ const IndexPage = () => {
     <ToastContainer /> 
     <TextArea />
     現在想定されている予約語→SELECT、FROM、JOIN、WHERE
+    現在対応されていない形式→ JOIN ON、()を使った形式など。
   </React.Fragment>
 }
 

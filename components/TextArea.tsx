@@ -12,7 +12,6 @@ const TextArea = () => {
     const convertBakedCodeToBeEasy = (code: string) => {
         // 改行数をカウント、行ごとに配列の要素にいれる
         const sqlLogLines: Array<string> = code.split(/\n/g);
-        // console.log(sqlLogLines);
         if (sqlLogLines.length <= 0) {
             console.log('1行以上入力してください')
         }
@@ -45,10 +44,6 @@ const TextArea = () => {
 
     // core
     const converting = (oneLineSQL: string, model: number[][]): string => {
-        // console.log(oneLineSQL);
-        // console.log(model.length);
-        // console.log(oneLineSQL.split(';'));
-        // console.log(oneLineSQL.split(';')[model.length]);
         let result = '';
         // 生成し直す
         const newSQLLines = oneLineSQL.split(';').filter((n, index) => {
@@ -56,25 +51,31 @@ const TextArea = () => {
                 return n;
             }
         })
-        // console.log(newSQLLines);
         newSQLLines.forEach((sql, index) => {
-            // console.log(model[index]);
-            // console.log(sql);
             model[index].forEach((m, i) => {
-                // console.log(i);
-                // console.log(m);
-                
-                // console.log(!isNaN(model[index][i+1]-1) ? model[index][i+1]-1 : sql.length-1);
-                // console.log(!isNaN(model[index][i+1]-1) ? model[index][i+1]-1 : sql.length-1);
-                // console.log(sql.substr(m, !isNaN(model[index][i+1]-1) ? model[index][i+1]-1-m : sql.length-1-m));
-                result += `${sql.substr(m, !isNaN(model[index][i+1]-1) ? model[index][i+1]-1-m : sql.length-1-m)}\n`;
+                let choppedSql: string = `${sql.substr(m, !isNaN(model[index][i+1]-1) ? model[index][i+1]-1-m : sql.length-1-m)}${i === model[index].length-1 ? ';\n' : ''}\n`;
+                let wordLength = 0;
+                let tmpStr: string = '';
+                reservedWords.forEach((word) => {
+                    if (choppedSql.indexOf(word) !== -1) {
+                        wordLength = word.length;
+                    }
+                })
+                // SELECT などを入れる
+                tmpStr += `${choppedSql.substr(0, wordLength)}\n`;
+                // 残りを`,`で区切っていれる
+                let afterStr: string | string[] = choppedSql.substr(wordLength + 1, choppedSql.length).split(',');
+                // 配列の場合
+                if (typeof afterStr !== 'string') {
+                    afterStr.forEach((as, i) => {
+                        tmpStr += `\t${as}${i !== afterStr.length-1 ? ',\n' : ''}`;
+                    })
+                } else {
+                    tmpStr += `\t${choppedSql.substr(wordLength + 1, choppedSql.length)}\n`;
+                }
+                result += tmpStr;
             })
-            // console.log('------------------------');
-            // console.log(sql.substr())
         })
-        // console.log(oneLineSQL);
-        // console.log(model);
-        // return oneLineSQL;
         return result;
     }
 
@@ -89,7 +90,7 @@ const TextArea = () => {
 
     const reset = () => {
         setBakedCode('');
-        setConvertedCode([]);
+        setConvertedCode('');
     }
 
     const toastForCopy = () => {
