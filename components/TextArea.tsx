@@ -24,11 +24,8 @@ const TextArea = () => {
             sqlLogLinesWithoutUnnecessaryString += tmpSqlLog;
         });
         console.log(sqlLogLinesWithoutUnnecessaryString);
-        // 
-        // const firstConvertedCode = code.split(/Query+\s+/g);
-        // console.log(code.split(/Query+\s+/g));
-        // const result = firstConvertedCode.replace(/;+/g, ';\n');
         setConvertedCode(sqlLogLinesWithoutUnnecessaryString);
+        console.log(reservedWords);
     }
 
     function copyToClipboard(e: any) {
