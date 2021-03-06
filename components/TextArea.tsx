@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { toast } from 'react-toastify';
 
+// TODO 全体的にバグってて拡張性が皆無なので直す
 const TextArea = () => {
     const placeHolderCode = `ここにペースト\n`;
     const [bakedCode, setBakedCode] = useState<string>('');
@@ -10,6 +11,9 @@ const TextArea = () => {
 
     // 前後処理
     const convertBakedCodeToBeEasy = (code: string) => {
+        if (code === '') {
+            return;
+        }
         // 改行数をカウント、行ごとに配列の要素にいれる
         const sqlLogLines: Array<string> = code.split(/\n/g);
         if (sqlLogLines.length <= 0) {

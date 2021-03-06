@@ -8,8 +8,10 @@ const IndexPage = () => {
     <h1>MySQLログを整形するやつ</h1>
     <ToastContainer /> 
     <TextArea />
-    現在想定されている予約語→SELECT、FROM、WHERE句(大文字飲み)<br />
-    あと色々とガバガバすぎです…
+    <li>2021/03/07 簡単なSELECT文のみ対応</li>
+    <div>
+      <a href="https://github.com/rrih/mysql-log-formatter">GitHub</a>
+    </div>
   </React.Fragment>
 }
 
