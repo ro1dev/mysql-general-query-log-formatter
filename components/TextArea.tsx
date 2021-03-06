@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import { toast } from 'react-toastify';
 
 const TextArea = () => {
-    const placeHolderCode = `ここにペースト\n例:\n2021-03-04T08:59:22.248461Z	 1318 Query	SELECT Payments.user_id AS Payments__user_id FROM payments Payments WHERE Payments.coupon_id = 2463\n\n2021-03-04T08:59:22.261667Z	 1318 Query	SELECT Payments.id AS Payments__id, Payments.belong_id AS Payments__belong_id FROM payments Payments WHERE Payments.coupon_id = 2462\n2021-03-04T08:59:22.269026Z	 1318 Query	SELECT Payments.user_id AS Payments__user_id FROM payments Payments WHERE Payments.coupon_id = 2462\n\n2021-03-04T08:59:22.283015Z	 1318 Query	SELECT Payments.id AS Payments__id, Payments.belong_id AS Payments__belong_id FROM payments Payments WHERE Payments.coupon_id = 2461`
+    const placeHolderCode = `ここにペースト\n`;
     const [bakedCode, setBakedCode] = useState<string>('');
     const [convertedCode, setConvertedCode] = useState<string>('');
     const textAreaRef = useRef<any>();

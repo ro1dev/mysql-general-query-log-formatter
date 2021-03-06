@@ -8,8 +8,8 @@ const IndexPage = () => {
     <h1>MySQLログを整形するやつ</h1>
     <ToastContainer /> 
     <TextArea />
-    現在想定されている予約語→SELECT、FROM、JOIN、WHERE
-    現在対応されていない形式→ JOIN ON、()を使った形式など。
+    現在想定されている予約語→SELECT、FROM、WHERE句(大文字飲み)<br />
+    あと色々とガバガバすぎです…
   </React.Fragment>
 }
 
